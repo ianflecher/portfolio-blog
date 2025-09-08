@@ -1,22 +1,28 @@
-import { urlFor } from "@/lib/sanity";
+"use client";
 
-export default function BlogCard({ post }: { post: any }) {
+interface BlogCardProps {
+  post: any;
+  tagColors?: Record<string, string>;
+}
+
+export default function BlogCard({ post, tagColors }: BlogCardProps) {
   return (
-    <div className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition">
-      {post.coverImage && (
-        <img
-          src={urlFor(post.coverImage).width(800).url()}
-          alt={post.title}
-          className="w-full h-48 object-cover"
-        />
+    <div>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{post.title}</h2>
+      <p className="text-gray-700 dark:text-gray-300 mt-2">{post.excerpt}</p>
+
+      {post.tags && post.tags.length > 0 && (
+        <div className="flex gap-2 mt-3 flex-wrap">
+          {post.tags.map((tag: string, idx: number) => {
+            const colorClass = tagColors?.[tag] || "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200";
+            return (
+              <span key={idx} className={`text-xs px-2 py-1 rounded-full ${colorClass}`}>
+                {tag}
+              </span>
+            );
+          })}
+        </div>
       )}
-      <div className="p-4">
-        <h2 className="text-2xl font-bold">{post.title}</h2>
-        <p className="mt-2 text-gray-600">{post.excerpt}</p>
-        <p className="mt-1 text-sm text-gray-400">
-          {new Date(post.publishedAt).toLocaleDateString()}
-        </p>
-      </div>
     </div>
   );
 }
