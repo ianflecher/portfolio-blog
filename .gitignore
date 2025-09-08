@@ -40,6 +40,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-!/studio-portfolio-blog/
 
-/studio-portfolio-blog
+!/studio-portfolio-blog
