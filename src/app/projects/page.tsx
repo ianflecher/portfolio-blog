@@ -62,7 +62,9 @@ export default async function ProjectsPage() {
     .map((p) => ({
       id: p._id,
       title: p.title,
-      description: p.description ?? describeProject(p.title) ?? null,
+      // `||` not `??`: an empty description field in Sanity should fall through
+      // to the curated text rather than render as a blank card.
+      description: p.description || describeProject(p.title) || null,
       repoUrl: null,
       demoUrl: p.link ?? null,
       image: p.image,

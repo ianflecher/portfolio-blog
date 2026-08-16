@@ -33,6 +33,16 @@ export const projectDescriptions: Record<string, string> = {
   module:
     "A self-contained Laravel module built to slot into a larger ERP system, with its own routes, models and Blade views.",
 
+  // ---- Imprint Customs platform ----
+  inventory:
+    "Inventory management system for Imprint Customs — stock levels, item records and movement tracking behind a role-based login.",
+  production:
+    "Production management system for Imprint Customs, tracking jobs through the print workflow with separate access for admins, account officers and production staff.",
+  ecommerce:
+    "Customer-facing storefront for Imprint Customs — a premium apparel and custom merchandise shop with browsing, product pages and checkout.",
+  hris:
+    "Human resource information system covering employee records, and the day-to-day administrative workflows an HR team runs on.",
+
   // ---- Academic / institutional web apps ----
   researchrepositorymanagementsystem:
     "Digital repository for academic research — submission, cataloguing and retrieval of papers, built with Laravel and Blade.",
