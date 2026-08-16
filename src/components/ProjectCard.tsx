@@ -46,9 +46,12 @@ function formatDate(iso: string | null) {
 
 export default function ProjectCard({ project }: { project: Project }) {
   const updated = formatDate(project.updatedAt);
-  // Public repos: the whole card links to the repo. Private ones have nowhere
-  // useful to send a visitor, so they stay static.
-  const cardHref = !project.isPrivate ? project.repoUrl ?? project.demoUrl : null;
+  // Public repos: the whole card links to the repo. Private ones link to their
+  // live demo if there is one, and are otherwise static — a locked repo page is
+  // a dead end for a visitor.
+  const cardHref = project.isPrivate
+    ? project.demoUrl
+    : project.repoUrl ?? project.demoUrl;
 
   return (
     <article

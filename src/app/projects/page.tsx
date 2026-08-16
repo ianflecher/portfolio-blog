@@ -1,6 +1,6 @@
 import { sanityClient } from "@/lib/sanity";
 import { fetchRepos, GITHUB_USERNAME, type Repo } from "@/lib/github";
-import { describeProject } from "@/lib/projectDescriptions";
+import { describeProject, demoForProject } from "@/lib/projectDescriptions";
 import ProjectCard, { type Project } from "@/components/ProjectCard";
 import { FaGithub } from "react-icons/fa";
 
@@ -42,7 +42,9 @@ export default async function ProjectsPage() {
         description:
           o?.description || describeProject(repo.name) || repo.description,
         repoUrl: repo.repoUrl,
-        demoUrl: o?.link || repo.demoUrl,
+        // The curated map beats GitHub's homepage field: some repos still point
+        // at an older deployment there.
+        demoUrl: o?.link || demoForProject(repo.name) || repo.demoUrl || null,
         image: o?.image,
         techs: o?.techs?.length ? o.techs : repo.techs,
         stars: repo.stars,

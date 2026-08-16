@@ -72,6 +72,18 @@ export const projectDescriptions: Record<string, string> = {
   next: "Scratch project for trying out Next.js features with TypeScript.",
 };
 
+/**
+ * Live deployments, keyed by repo name.
+ *
+ * Only needed when a repo has no `homepage` set on GitHub — setting the
+ * homepage field there means the link shows up here automatically.
+ */
+export const projectDemos: Record<string, string> = {
+  inventory: "https://inventory-fhh2-zeta.vercel.app/",
+  production: "https://imprintproduction.vercel.app/",
+  ecommerce: "https://ecommerce-9m2w.vercel.app/",
+};
+
 /** Lowercase, letters and digits only — so naming style never breaks a lookup. */
 export function normaliseRepoKey(name: string) {
   return name.toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -79,4 +91,8 @@ export function normaliseRepoKey(name: string) {
 
 export function describeProject(repoName: string): string | undefined {
   return projectDescriptions[normaliseRepoKey(repoName)];
+}
+
+export function demoForProject(repoName: string): string | undefined {
+  return projectDemos[normaliseRepoKey(repoName)];
 }

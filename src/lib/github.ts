@@ -14,6 +14,8 @@ export const INCLUDE_PRIVATE = process.env.GITHUB_INCLUDE_PRIVATE === "true";
 type GitHubRepo = {
   id: number;
   name: string;
+  /** "owner/repo" — needed because not every repo is owned by GITHUB_USERNAME. */
+  full_name: string;
   description: string | null;
   html_url: string;
   homepage: string | null;
@@ -56,10 +58,10 @@ const authHeaders: HeadersInit = token ? { Authorization: `Bearer ${token}` } : 
  * Per-repo languages, so a Laravel app shows "PHP, Blade" instead of just
  * its single primary language. Failures fall back to the primary language.
  */
-async function fetchLanguages(repoName: string): Promise<string[]> {
+async function fetchLanguages(fullName: string): Promise<string[]> {
   try {
     const res = await fetch(
-      `https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}/languages`,
+      `https://api.github.com/repos/${fullName}/languages`,
       { headers: authHeaders, next: { revalidate: 3600 } }
     );
     if (!res.ok) return [];
@@ -77,7 +79,9 @@ export async function fetchRepos(): Promise<Repo[]> {
   // /user/repos sees private repos; /users/:name/repos is public-only.
   const url =
     token && INCLUDE_PRIVATE
-      ? "https://api.github.com/user/repos?per_page=100&sort=updated&affiliation=owner"
+      ? // affiliation covers repos you own, collaborate on, or reach via an org —
+        // "owner" alone silently drops org-hosted and shared work.
+        "https://api.github.com/user/repos?per_page=100&sort=updated&affiliation=owner,collaborator,organization_member"
       : `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`;
 
   const res = await fetch(url, { headers: authHeaders, next: { revalidate: 3600 } });
@@ -91,7 +95,9 @@ export async function fetchRepos(): Promise<Repo[]> {
       !r.fork && !HIDDEN_REPOS.includes(r.name) && (INCLUDE_PRIVATE || !r.private)
   );
 
-  const languages = await Promise.all(visible.map((r) => fetchLanguages(r.name)));
+  const languages = await Promise.all(
+    visible.map((r) => fetchLanguages(r.full_name ?? `${GITHUB_USERNAME}/${r.name}`))
+  );
 
   return visible.map((r, i) => ({
     id: r.id,
