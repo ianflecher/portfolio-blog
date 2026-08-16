@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --surface: #ffffff;
+  --surface-muted: #f7f7f8;
+  --foreground: #0d0d0e;
+  --muted: #62636b;
+  --border: #e6e6e9;
+  --accent: #4f46e5;
+  --accent-soft: rgba(79, 70, 229, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #08080a;
+    --surface: #101014;
+    --surface-muted: #16161c;
+    --foreground: #f2f2f4;
+    --muted: #9a9aa6;
+    --border: #24242c;
+    --accent: #818cf8;
+    --accent-soft: rgba(129, 140, 248, 0.12);
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  /* Geist, loaded in layout.tsx. This used to be hardcoded to Arial, which
+     silently overrode the font the app was already downloading. */
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Soft page-wide glow behind the content, fixed so it never scrolls away. */
+.page-glow::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 30rem at 15% -10%, var(--accent-soft), transparent 70%),
+    radial-gradient(50rem 25rem at 90% 0%, rgba(236, 72, 153, 0.07), transparent 70%);
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-rise {
+  animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
