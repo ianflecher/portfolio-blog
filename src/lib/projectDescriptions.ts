@@ -90,7 +90,7 @@ export const projectDescriptions: Record<string, string> = {
  */
 export const projectDemos: Record<string, string> = {
   inventory: "https://inventory-fhh2-zeta.vercel.app/",
-  production: "https://imprintproduction.vercel.app/",
+  production: "https://production-6u4o.onrender.com/",
   ecommerce: "https://ecommerce-9m2w.vercel.app/",
 };
 
