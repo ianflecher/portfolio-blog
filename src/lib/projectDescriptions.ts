@@ -92,6 +92,7 @@ export const projectDemos: Record<string, string> = {
   inventory: "https://inventory-fhh2-zeta.vercel.app/",
   production: "https://production-6u4o.onrender.com/",
   ecommerce: "https://ecommerce-9m2w.vercel.app/",
+  hris: "https://hrsystem-a3qn.onrender.com/",
 };
 
 /** Lowercase, letters and digits only — so naming style never breaks a lookup. */
